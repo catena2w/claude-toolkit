@@ -2,13 +2,25 @@
 
 Shared Claude Code skills for software development teams.
 
-## Setup
+## Installation
 
-Add to your project as a submodule:
+### Option A: As `.claude` (no project-specific overrides)
 
+```bash
+git submodule add git@github.com:catena2w/claude-toolkit.git .claude
+bash .claude/setup.sh
 ```
+
+### Option B: As `.claude/shared` (allows project-specific commands)
+
+```bash
 git submodule add git@github.com:catena2w/claude-toolkit.git .claude/shared
+bash .claude/shared/setup.sh
+git add .claude/
 ```
+
+Setup creates symlinks so Claude Code discovers commands and agents.
+Project-specific files in `.claude/commands/` or `.claude/agents/` are preserved.
 
 ## Contents
 
@@ -32,7 +44,7 @@ git submodule add git@github.com:catena2w/claude-toolkit.git .claude/shared
 | `/tdd-green` | Minimal implementation to pass |
 | `/tdd-refactor` | Improve code, keep tests green |
 | `/review <scope>` | Quality gate reviews (code + security + architecture) |
-| `/commit` | Commit with quality gates and push |
+| `/commit` | Commit with feature-branch PR workflow |
 
 ### Hooks
 
@@ -40,10 +52,3 @@ git submodule add git@github.com:catena2w/claude-toolkit.git .claude/shared
 |------|---------|
 | `pre-push` | Prevent direct push to main |
 | `commit-msg` | Enforce commit message rules (capital start, 72 chars, no period) |
-| `install-hooks.sh` | Install hooks into `.git/hooks/` |
-
-## Install Hooks
-
-```bash
-bash .claude/shared/hooks/install-hooks.sh
-```
