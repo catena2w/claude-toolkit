@@ -4,15 +4,6 @@ Shared Claude Code skills for software development teams.
 
 ## Installation
 
-### Option A: As `.claude` (no project-specific overrides)
-
-```bash
-git submodule add git@github.com:catena2w/claude-toolkit.git .claude
-bash .claude/setup.sh
-```
-
-### Option B: As `.claude/shared` (allows project-specific commands)
-
 ```bash
 git submodule add git@github.com:catena2w/claude-toolkit.git .claude/shared
 bash .claude/shared/setup.sh
