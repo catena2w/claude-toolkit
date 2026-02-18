@@ -58,6 +58,22 @@ if [[ "$MODE" == "shared" ]]; then
         fi
     done
 
+    # Rules
+    if [[ -d "$SCRIPT_DIR/rules" ]]; then
+        mkdir -p .claude/rules
+        for rule in "$SCRIPT_DIR"/rules/*.md; do
+            name="$(basename "$rule")"
+            target="../${TOOLKIT_REL}/rules/${name}"
+            link=".claude/rules/${name}"
+            if [[ -e "$link" && ! -L "$link" ]]; then
+                echo "  SKIP: $link (project-specific file exists)"
+            else
+                ln -sf "$target" "$link"
+                echo "  Linked: $link"
+            fi
+        done
+    fi
+
     echo ""
 fi
 
