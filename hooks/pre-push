@@ -1,0 +1,14 @@
+#!/bin/bash
+# Pre-push hook: Prevent direct pushes to main branch
+
+protected_branch="main"
+
+while read local_ref local_sha remote_ref remote_sha; do
+    if [[ "$remote_ref" == "refs/heads/$protected_branch" ]]; then
+        echo "ERROR: Direct push to '$protected_branch' is not allowed."
+        echo "Create a feature branch and open a pull request instead."
+        exit 1
+    fi
+done
+
+exit 0
