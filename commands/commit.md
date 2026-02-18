@@ -1,73 +1,36 @@
-# Commit Changes
+Commit changes, push to remote, and create PR if needed.
 
-Commit all uncommitted changes and push to main.
+## Workflow
 
-## Usage
+1. **Branch Check**
+   - If on `main`: prompt for branch type and description, then `git checkout -b <type>/<description>`
+   - Valid types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`
 
-- `/commit` — Commit and push to main
+2. **Auto-fix before commit**
+   - Run project linter/formatter if configured (check CLAUDE.md for project-specific tools)
+   - Pre-commit hooks will verify quality gates
 
-## Steps
+3. **Commit & Push**
+   - Stage all changes: `git add -A`
+   - Generate concise commit message from diff
+   - Commit and push: `git push -u origin <branch>`
 
-### 1. Quality gates (always first)
+4. **Merge Main**
+   - `git fetch origin main && git merge origin/main`
+   - If conflicts: resolve, commit merge, push
+   - If clean: push
 
-```bash
-git diff --name-only
-```
+5. **PR Creation** (first push only)
+   - Check if PR exists: `gh pr list --head <branch>`
+   - If no PR: `gh pr create --fill`
 
-For each changed `.md` file, verify:
-- [ ] YAML frontmatter exists (`purpose`, `updated`)
-- [ ] `updated` date is today (YYYY-MM-DD)
-- [ ] If new file: added to relevant `_index.md`
+6. **Branch Cleanup**
+   - Delete local branches already merged into main: `git branch --merged main | grep -v '^\*\|main' | xargs -r git branch -d`
+   - Prune remote tracking branches: `git fetch --prune`
 
-For changed `_index.md` files:
-- [ ] All listed files exist
-- [ ] No missing entries for new files in that folder
+## Rules
 
-**If issues found:** fix them before proceeding. Update `updated` field, add missing index entries.
-
-### 2. Check for changes
-
-```bash
-git status
-git diff --stat
-```
-
-If no changes, respond: "Nothing to commit."
-
-### 3. Stage all changes
-
-```bash
-git add -A
-```
-
-### 4. Generate commit message
-
-Review the staged changes and write a concise commit message:
-- Focus on what changed, not how
-- Use imperative mood ("add feature" not "added feature")
-- Keep first line under 72 characters
-- NO Co-Authored-By line
-
-### 5. Commit and push
-
-```bash
-git commit -m "$(cat <<'EOF'
-[commit message here]
-EOF
-)"
-git push origin main
-```
-
-**Output to user:**
-```
-## Changes pushed to main
-
-[Summary of changes]
-
-**Commit:** [commit hash]
-```
-
-## Safety
-
-- Always run `git status` first to verify what will be committed
-- Warn if committing sensitive files (.env, credentials, etc.)
+- Never commit directly to `main`
+- One logical change per commit
+- Commit message rules enforced by hook (see `.claude/shared/hooks/commit-msg`):
+  capital start, ≤72 chars, no trailing period, no Co-Authored-By
