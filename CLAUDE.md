@@ -15,6 +15,12 @@
 
 | Command | Purpose |
 |---------|---------|
+| `/pm:plan <feature>` | Decompose feature into tasks with dependencies |
+| `/pm:create-issues` | Batch create GitHub issues from plan |
+| `/pm:start <number>` | Pick up an issue and start TDD workflow |
+| `/pm:next` | Show ready (unblocked) issues |
+| `/pm:advance` | Close done issues, unblock next batch |
+| `/pm:status` | Project dashboard |
 | `/tdd-cycle <feature>` | Full TDD workflow (12 phases) |
 | `/tdd-red <requirement>` | Write failing tests |
 | `/tdd-green` | Minimal implementation to pass |
